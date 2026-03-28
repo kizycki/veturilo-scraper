@@ -1,0 +1,24 @@
+name: Hourly Veturilo Scrape
+on:
+  schedule:
+    - cron: '0 * * * *'  # Co godzinę
+  workflow_dispatch:
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Install deps
+      run: pip install requests beautifulsoup4 pandas playwright
+    - name: Run scraper
+      run: python scraper.py
+    - name: Commit CSV
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add stations.csv
+        git diff --staged --quiet || git commit -m "Update stations $(date)"
+        git push
