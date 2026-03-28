@@ -21,4 +21,4 @@ jobs:
         git config --local user.name "GitHub Action"
         git add stations.csv
         git diff --staged --quiet || git commit -m "Update stations $(date)"
-        git push
+        git push #fdff
